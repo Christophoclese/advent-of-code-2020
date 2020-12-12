@@ -7,6 +7,7 @@
 #>
 [CmdletBinding()]
 Param(
+    $Sum = 2020
 )
 
 # Get input
@@ -26,14 +27,15 @@ Do {
 } Until ($UserInput -eq '' -or $UserInput -eq 'q')
 
 # ForEach element in array
-ForEach ($Expense in $ExpenseReport) {
-    # This element plus what will equal 2020?
-    $MagicNumber = 2020 - $Expense
+ForEach ($FirstEntry in $ExpenseReport) {
+    ForEach ($SecondEntry in $ExpenseReport -notmatch $FirstEntry) {
+        $MagicNumber = $Sum - $FirstEntry - $SecondEntry
 
-    # does this magic number exist?
-    If ($ExpenseReport -contains $MagicNumber) {
-        $Answer = $Expense * $MagicNumber
-        break
+        # does this magic number exist?
+        If ($ExpenseReport -contains $MagicNumber) {
+            $Answer = $FirstEntry * $SecondEntry * $MagicNumber
+            break
+        }
     }
 }
 
