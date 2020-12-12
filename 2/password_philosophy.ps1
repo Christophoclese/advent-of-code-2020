@@ -24,14 +24,12 @@ $regex = "^(?'min'\d+)-(?'max'\d+) (?'letter'\w): (?'token'\w+)$"
 ForEach ($Password in $PasswordList) {
     # Parse line
     If ($Password -match $regex) {
-        $Minimum = $Matches.min
-        $Maximum = $Matches.max
+        $Pos1 = $Matches.min
+        $Pos2 = $Matches.max
         $Letter = $Matches.letter
         $Token = $Matches.token
 
-        $LettersMatched = ($Token.ToCharArray() -match $Letter).Count
-
-        If ($LettersMatched -ge $Minimum -and $LettersMatched -le $Maximum) {
+        If ($Token[$Pos1 - 1] -eq $Letter -xor $Token[$Pos2 - 1] -eq $Letter) {
             $ValidPasswords++
         }
         Else {
